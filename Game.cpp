@@ -3,56 +3,8 @@
 #include <iostream>
 
 #include "Game.h"
-#include "App.h"
-#include "GlutApp.h"
 
-Game* singleton;
-
-void timer(int id){
-    
-    float x1 = singleton->background->getX();
-    float x2 = singleton->secondbg->getX();;
-    float x3 = singleton->thirdbg->getX();;
-    
-    if (singleton->forward){
-        if (x1 <= -6){
-            x1 = x3+4;
-        }
-        if (x2 <= -6){
-            x2 = x1+4;
-        }
-        if (x3 <= -6){
-            x3 = x2+4;
-        }
-    }
-    else{
-        if (x1 >= 2){
-            x1 = x3-4;
-        }
-        if (x2 >= 2){
-            x2 = x1-4;
-        }
-        if (x3 >= 2){
-            x3 = x2-4;
-        }
-    }
-    
-    float amount;
-    if (!singleton->forward){
-        amount = -singleton->inc;
-    }
-    else{
-        amount = singleton->inc;
-    }
-    
-    singleton->background->setX(x1-amount);
-    singleton->secondbg->setX(x2-amount);
-    singleton->thirdbg->setX(x3-amount);
-    singleton->redraw();
-    glutTimerFunc(16, timer, id);
-}
-
-Game::Game(int argc, char** argv, int width, int height, const char* title): GlutApp(argc, argv, width, height, title){
+Game::Game(){
 	
 	blueshipfile = "blueship.png";
 	orangeshipfile = "orangeship.png";
@@ -74,32 +26,77 @@ Game::Game(int argc, char** argv, int width, int height, const char* title): Glu
 	
 	firebullet = false;
     hit = false;
-    forward = false;
+    forward = true;
 
     setRate(1);
     start();
 }
 
 void Game::action(){
+
+	float x1 = background->getX();
+	float x2 = secondbg->getX();
+	float x3 = thirdbg->getX();
+
+	if (forward){
+		if (x1 <= -6){
+			x1 = x3+4;
+		}
+		if (x2 <= -6){
+			x2 = x1+4;
+		}
+		if (x3 <= -6){
+			x3 = x2+4;
+		}
+	}
+	else{
+		if (x1 >= 2){
+			x1 = x3-4;
+		}
+		if (x2 >= 2){
+			x2 = x1-4;
+		}
+		if (x3 >= 2){
+			x3 = x2-4;
+		}
+	}
+	
+	float amount;
+	if (!forward){
+		amount = -inc;
+	}
+	else{
+		amount = inc;
+	}
+	
+	background->setX(x1-amount);
+	secondbg->setX(x2-amount);
+	thirdbg->setX(x3-amount);
+	
+	glutPostRedisplay();
+
+
+
+
     float mx = 0.5;
     float my = 0;
     
 
-    if (!hit && firebullet){
-        float ypos = bluebullet->getY();
-        ypos +=0.005;
-        bluebullet->setY(ypos);
+    // if (!hit && firebullet){
+    //     float ypos = bluebullet->getY();
+    //     ypos +=0.005;
+    //     bluebullet->setY(ypos);
 
-        if (orangeship->contains(0, ypos-0.005)){
-            firebullet = false;
-            hit = true;
-            orangeshipV = false;
-            bluebulletV= false;
-            explosion->setX(orangeship->getX());
-            explosion->setY(orangeship->getY());
-            explosion->playOnce();
-        }
-    }
+    //     if (orangeship->contains(0, ypos-0.005)){
+    //         firebullet = false;
+    //         hit = true;
+    //         orangeshipV = false;
+    //         bluebulletV= false;
+    //         explosion->setX(orangeship->getX());
+    //         explosion->setY(orangeship->getY());
+    //         explosion->playOnce();
+    //     }
+    // }
     
     if (hit){
         explosion->setY(explosion->getY()-0.0001);
@@ -112,24 +109,24 @@ void Game::draw() const{ // removed const temporarily
     thirdbg->draw(0);
 
 
-    if (blueshipV){
-        blueship->draw(0.2);
-    }
-    if (orangeshipV){
-        orangeship->draw(0.2);
-    }
+    // if (blueshipV){
+    //     blueship->draw(0.2);
+    // }
+    // if (orangeshipV){
+    //     orangeship->draw(0.2);
+    // }
 
-	if(jellyfishV){
-		jellyfish->draw(0.3);
-	}
-	if(bluebulletV){
-		bluebullet->draw(0.2);
-	}
-	if(orangebulletV){
-		orangebullet->draw(0.2);
-	}
+	// if(jellyfishV){
+	// 	jellyfish->draw(0.3);
+	// }
+	// if(bluebulletV){
+	// 	bluebullet->draw(0.2);
+	// }
+	// if(orangebulletV){
+	// 	orangebullet->draw(0.2);
+	// }
 
-    explosion->draw(0.1);
+    // explosion->draw(0.1);
 };
 
 void Game::handleKeyDown(unsigned char key, float x, float y){
@@ -147,10 +144,10 @@ void Game::handleKeyDown(unsigned char key, float x, float y){
 Game::~Game(){
     stop();
 
-	delete blueship; //mushroom
-	delete orangeship;
-	delete jellyfish;
+	// delete blueship; 
+	// delete orangeship;
+	// delete jellyfish;
 
-	delete bluebullet;
-	delete orangebullet;
+	// delete bluebullet;
+	// delete orangebullet;
 }

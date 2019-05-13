@@ -37,7 +37,7 @@ class Game: public AppComponent, private Timer{
 	
 public:
     AnimatedRect* explosion;
-    Game(int argc, char** argv, int width, int height, const char* title);
+    Game();
     
     void draw() const; // removed const
     void handleKeyDown(unsigned char, float, float);
