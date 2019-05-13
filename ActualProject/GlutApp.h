@@ -15,6 +15,8 @@ class GlutApp {
     
     const char* title;
     
+    bool fullscreen;
+    
     // Prevent derived classes from defining these constructors
     GlutApp(){} 
     GlutApp(const GlutApp&){}
@@ -41,8 +43,9 @@ protected:
 public:
     void run();
     void redraw();
+    void toggleFullScreen();
     
-    virtual void draw() = 0;
+    virtual void draw() const = 0;
     
     virtual void keyDown(unsigned char, float, float){}
     virtual void keyUp(unsigned char, float, float){}

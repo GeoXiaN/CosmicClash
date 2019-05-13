@@ -15,11 +15,14 @@
 
 class Timer {
     int interval;
-    bool running;
+    
+    int delta;
+    int initial;
     std::thread timerThread;
     
     static void repeat(Timer*);
 public:
+    bool running;
     Timer();
     
     void start();

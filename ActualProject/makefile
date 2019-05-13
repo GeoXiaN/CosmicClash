@@ -12,12 +12,12 @@ PROGRAM = glutapp
 # OPTFLAGS = -g  # for debug
 OPTFLAGS =
 CC       = g++
-CFLAGS   = -w $(OPTFLAGS) -std=c++11 -pthread
+CFLAGS   = -w $(OPTFLAGS) -ISOIL/includes -std=c++11 -pthread
 
 ifeq ($(strip $(OS)),Darwin)
 	LDFLAGS = -framework CoreFoundation -framework GLUT -framework OpenGL -LSOIL/lib/macOS -lSOIL
 else
-	LDFLAGS = -lGL -lglut -lGLU #-LSOIL/lib/ubuntu -lSOIL 
+	LDFLAGS = -lGL -lglut -lGLU -LSOIL/lib/ubuntu -lSOIL 
 endif
 
 #######################################################################

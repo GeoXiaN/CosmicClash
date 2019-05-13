@@ -1,4 +1,5 @@
 #include "TexRect.h"
+#include <iostream>
 
 TexRect::TexRect(const char* filename, float x=0, float y=0, float w=0.5, float h=0.5): Rect(x, y, w, h, 1.0f, 1.0f, 1.0f){
     
@@ -7,11 +8,11 @@ TexRect::TexRect(const char* filename, float x=0, float y=0, float w=0.5, float 
     glEnable(GL_DEPTH_TEST);
     
     texture_id = SOIL_load_OGL_texture (
-                                        filename,
-                                        SOIL_LOAD_AUTO,
-                                        SOIL_CREATE_NEW_ID,
-                                        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-                                        );
+        filename,
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+    );
     
     if(0 == texture_id){
         std::cout <<"SOIL loading error: " << SOIL_last_result() << std::endl;

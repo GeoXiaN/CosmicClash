@@ -1,17 +1,9 @@
 #ifndef Rect_h
 #define Rect_h
 
-#if defined WIN32
-#include <freeglut.h>
-#elif defined __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/freeglut.h>
-#endif
+#include "Shape.h"
 
-#include <iostream>
-
-class Rect{
+class Rect: public Shape{
 protected:
     float x;
     float y;

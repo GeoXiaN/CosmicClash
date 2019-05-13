@@ -1,18 +1,31 @@
 #include "Timer.h"
-#include <iostream>
 
 void Timer::repeat(Timer* self){
+    
+    
     while (self->running){
+        int tss = glutGet(GLUT_ELAPSED_TIME);
+        
+        self->delta = tss - self->initial;
+        
         int delay = self->interval;
-        self->action();
-        std::this_thread::sleep_for (std::chrono::milliseconds(delay));
+        if (self->delta >= self->interval){
+           
+            self->action();
+            glutPostRedisplay();
+            
+            self->initial = glutGet(GLUT_ELAPSED_TIME);
+        }
+        std::this_thread::sleep_for (std::chrono::milliseconds(self->interval/2));
     }
+    
 }
 
 Timer::Timer() {
     interval = 1000;
     running = false;
-    
+    initial = glutGet(GLUT_ELAPSED_TIME);
+    delta = initial;
 }
 
 Timer::~Timer(){
@@ -20,6 +33,7 @@ Timer::~Timer(){
 }
 
 void Timer::stop(){
+    if (running) timerThread.detach();
     running = false;
 }
 

@@ -13,20 +13,20 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BE3DDA17-F918-42E2-B822-4C8A6EF632C9}</ProjectGuid>
     <RootNamespace>glutapp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -59,7 +59,7 @@
       <AdditionalIncludeDirectories>../windows;../;../freeglut;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -115,12 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Ad.cpp" />
     <ClCompile Include="..\AnimatedRect.cpp" />
     <ClCompile Include="..\App.cpp" />
     <ClCompile Include="..\app_main.cpp" />
+    <ClCompile Include="..\Game.cpp" />
     <ClCompile Include="..\GlutApp.cpp" />
     <ClCompile Include="..\Rect.cpp" />
     <ClCompile Include="..\TexRect.cpp" />
+    <ClCompile Include="..\TextBox.cpp" />
     <ClCompile Include="..\Timer.cpp" />
     <ClCompile Include="..\windows\image_DXT.c" />
     <ClCompile Include="..\windows\image_helper.c" />
@@ -128,11 +131,16 @@
     <ClCompile Include="..\windows\stb_image_aug.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Ad.h" />
     <ClInclude Include="..\AnimatedRect.h" />
     <ClInclude Include="..\App.h" />
+    <ClInclude Include="..\AppComponent.h" />
+    <ClInclude Include="..\Game.h" />
     <ClInclude Include="..\GlutApp.h" />
     <ClInclude Include="..\Rect.h" />
+    <ClInclude Include="..\Shape.h" />
     <ClInclude Include="..\TexRect.h" />
+    <ClInclude Include="..\TextBox.h" />
     <ClInclude Include="..\Timer.h" />
     <ClInclude Include="..\windows\image_DXT.h" />
     <ClInclude Include="..\windows\image_helper.h" />

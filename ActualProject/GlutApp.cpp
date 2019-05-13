@@ -7,6 +7,8 @@ static GlutApp* singleton;
 GlutApp::GlutApp(int argc, char** argv, int width, int height, const char* title){
     singleton = this;
     
+    fullscreen = false;
+    
     this->width = width;
     this->height = height;
     this->title = title;
@@ -17,7 +19,7 @@ GlutApp::GlutApp(int argc, char** argv, int width, int height, const char* title
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
     
     // Setup window position, size, and title
-    glutInitWindowPosition(100, 100);
+    glutInitWindowPosition(0, 0);
     glutInitWindowSize(this->width, this->height);
     glutCreateWindow(this->title);
     
@@ -63,6 +65,18 @@ GlutApp::GlutApp(int argc, char** argv, int width, int height, const char* title
 static void cleanup(){
     // Just call destructor
     delete singleton;
+}
+
+void GlutApp::toggleFullScreen(){
+    if (!fullscreen){
+        glutFullScreen();
+        fullscreen = true;
+    }
+    else {
+        glutReshapeWindow(width, height);
+        glutPositionWindow(0, 0);
+        fullscreen = false;
+    }
 }
 
 void GlutApp::run() {

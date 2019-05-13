@@ -11,7 +11,7 @@
 #include <SOIL.h>
 #else
 #include <GL/freeglut.h>
-#include "SOIL.h"
+#include <SOIL.h>
 #endif
 
 

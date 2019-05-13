@@ -1,39 +1,31 @@
 #ifndef App_h
 #define App_h
+#include <vector>
 
 #include "GlutApp.h"
-#include "AnimatedRect.h"
-
+#include "Game.h"
+#include "Ad.h"
 
 class App: public GlutApp {
     
-    TexRect* ship;
-    TexRect* background;
-    TexRect* secondbg;
-    TexRect* thirdbg;
-    float inc;
-    bool forward;
+    std::vector<AppComponent*> components;
+    
+    void addComponent(AppComponent* component){
+        components.push_back(component);
+    }
+    
+    bool fullscreen;
 public:
     
     App(int argc, char** argv, int width, int height, const char* title);
     
-    void draw();
+    void draw() const;
     
     void keyDown(unsigned char key, float x, float y);
-    void rightMouseDown(float, float);
-    
-    void keyUp(unsigned char, float, float);
-    
-    void specialKeyUp(int, float, float);
-    
-    void drag(float, float);
-    
-    void idle();
     
     ~App();
-    
-    friend void timer(int);
-    
+	
+	//friend void timer(int);
 };
 
 #endif

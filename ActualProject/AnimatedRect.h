@@ -24,10 +24,16 @@ class AnimatedRect: public TexRect, protected Timer {
     
     bool flipped;
     
+    void action();
+    
+    const char* filename;
+    
 public:
     
     
     AnimatedRect (const char*, int, int, int, bool, bool, float, float, float, float);
+    
+    void setMap(const char*, int, int);
     
     void draw(float z);
     
@@ -40,13 +46,12 @@ public:
     void pause();
     
     void resume();
-    
-    void action();
 
     void play();
     
     void flip();
     
+    ~AnimatedRect();
 };
 
 #endif
