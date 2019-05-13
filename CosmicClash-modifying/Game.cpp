@@ -17,7 +17,7 @@ Game::Game(){
 	bluebulletfile = "bluebullet.png";
 	orangebulletfile = "orangebullet.png";
 
-	fireballfile= "fireball.bmp";
+	fireballfile= "fireball.png";
 	explosion = new AnimatedRect(fireballfile, 6, 6, 64, false, false, -0.25, 0.8, 0.5, 0.5);
 
 
@@ -43,7 +43,13 @@ Game::Game(){
     hit = false;
     forward = true;
 
-	oprojup= true;
+	oprojup = true;
+
+
+	bprojup = false;
+	bprojdown = false;
+	bprojleft = false;
+	bprojright = false;
 
 	// vector<collider> loadout;
 	// for (size_t i = 0; i < count; i++)
@@ -108,6 +114,9 @@ void Game::action(){
 	float ox =orangeship-> getX();
 	float oy =orangeship-> getY();
 
+	float bx =blueship -> getX();
+	float by =blueship -> getY();
+
 	if(oprojup){
 		oy += 0.0005;
 		orangeship->setY(oy);
@@ -115,11 +124,30 @@ void Game::action(){
 		oy -= 0.0005;
 		orangeship->setY(oy);
 	}
-	if(oy> 0.75){
+	if(oy > 0.75){
 		oprojup = false;
 	}
-	if(oy<-0.55){
+	if(oy <-0.55){
 		oprojup = true;
+	}
+
+	if(bprojup){
+		by += 0.0005;
+		blueship->setY(by);	
+	} 
+	if(bprojdown){
+		by -= 0.0005;
+		blueship->setY(by);
+	}
+
+	if(bprojleft){
+		bx -= 0.0005;
+		blueship-> setX(bx);
+	}
+
+	if(bprojright){
+		bx += 0.0005;
+		blueship -> setX(bx);
 	}
 
 	
@@ -130,7 +158,7 @@ void Game::action(){
         xpos +=0.005;
         bluebullet->setX(xpos);
 
-        if (orangeship->contains(1.2,0.5)){
+        if (orangeship->contains(1.2,0.25)){  
             firebullet = false;
             hit = true;
             orangeshipV = false;
@@ -183,12 +211,37 @@ void Game::handleKeyDown(unsigned char key, float x, float y){
     else if (key == 'r'){
         start();
     }
-	if (key == 'e'){
-		inc += 0.005;
+	if (key == 'w'){
+		bprojleft=false;
+		bprojright=false;
+		bprojdown = false;
+
+		bprojup = true;
 	}
-	if (key == 'q'){
-		inc -= 0.005;
+	if (key == 'a'){
+		bprojup = false;
+		bprojdown = false;
+		bprojright = false;
+
+		bprojleft = true;
+
 	}
+	if (key == 's'){
+		bprojup = false;
+		bprojleft = false;
+		bprojright = false;
+
+		bprojdown = true;
+	}
+	if (key == 'd'){
+		bprojup = false;
+		bprojleft = false;
+		bprojdown = false;
+
+		bprojright = true;
+	}
+
+
 }
 
 Game::~Game(){

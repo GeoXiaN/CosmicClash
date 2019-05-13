@@ -27,6 +27,11 @@ class Game: public AppComponent, private Timer{
     TexRect* secondbg;
     TexRect* thirdbg;
 
+	float ox;
+	float oy;
+	float bx;
+	float by;
+
     bool blueshipV;
     bool orangeshipV;
 	bool jellyfishV;
@@ -36,6 +41,10 @@ class Game: public AppComponent, private Timer{
 	bool hit;
 	bool forward;
 	bool oprojup;
+	bool bprojup;
+	bool bprojdown;
+	bool bprojleft;
+	bool bprojright;
 
 	float inc;
 
