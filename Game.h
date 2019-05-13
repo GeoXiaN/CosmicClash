@@ -1,0 +1,54 @@
+#ifndef Game_hpp
+#define Game_hpp
+
+#include "AppComponent.h"
+#include "AnimatedRect.h"
+#include "Timer.h"
+
+class Game: public AppComponent, private Timer{
+	
+	const char* blueshipfile;
+	const char* orangeshipfile;
+	const char* jellyfishfile;
+	const char* spacebgfile;
+
+    TexRect* blueship; //mushroom
+	TexRect* orangeship;
+	TexRect* jellyfish;
+
+	TexRect* bluebullet;
+	TexRect* orangebullet;
+    
+	TexRect* background;
+    TexRect* secondbg;
+    TexRect* thirdbg;
+
+    bool blueshipV;
+    bool orangeshipV;
+	bool jellyfishV;
+	bool bluebulletV;
+	bool orangebulletV;
+    bool firebullet;
+	bool hit;
+	bool forward;
+
+	float inc;
+
+	
+public:
+    AnimatedRect* explosion;
+    Game(int argc, char** argv, int width, int height, const char* title);
+    
+    void draw() const; // removed const
+    void handleKeyDown(unsigned char, float, float);
+    
+    void action();
+	
+
+    ~Game();
+
+	friend void timer(int);
+
+};
+
+#endif 
