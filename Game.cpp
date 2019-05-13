@@ -4,6 +4,8 @@
 
 #include "Game.h"
 
+Game* st;
+
 Game::Game(){
 	
 	blueshipfile = "blueship.png";
@@ -30,15 +32,16 @@ Game::Game(){
 
     setRate(1);
     start();
+
+	timer(1);
 }
 
-void Game::action(){
+void timer(int id){
+	float x1 = st->background->getX();
+	float x2 = st->secondbg->getX();
+	float x3 = st->thirdbg->getX();
 
-	float x1 = background->getX();
-	float x2 = secondbg->getX();
-	float x3 = thirdbg->getX();
-
-	if (forward){
+	if (st->forward){
 		if (x1 <= -6){
 			x1 = x3+4;
 		}
@@ -62,41 +65,42 @@ void Game::action(){
 	}
 	
 	float amount;
-	if (!forward){
-		amount = -inc;
+	if (!st->forward){
+		amount = -st->inc;
 	}
 	else{
-		amount = inc;
+		amount = st->inc;
 	}
 	
-	background->setX(x1-amount);
-	secondbg->setX(x2-amount);
-	thirdbg->setX(x3-amount);
+	st->background->setX(x1-amount);
+	st->secondbg->setX(x2-amount);
+	st->thirdbg->setX(x3-amount);
 	
 	glutPostRedisplay();
+	glutTimerFunc(16, timer, id);
+}
 
-
-
+void Game::action(){
 
     float mx = 0.5;
     float my = 0;
     
 
-    // if (!hit && firebullet){
-    //     float ypos = bluebullet->getY();
-    //     ypos +=0.005;
-    //     bluebullet->setY(ypos);
+    if (!hit && firebullet){
+        float ypos = bluebullet->getY();
+        ypos +=0.005;
+        bluebullet->setY(ypos);
 
-    //     if (orangeship->contains(0, ypos-0.005)){
-    //         firebullet = false;
-    //         hit = true;
-    //         orangeshipV = false;
-    //         bluebulletV= false;
-    //         explosion->setX(orangeship->getX());
-    //         explosion->setY(orangeship->getY());
-    //         explosion->playOnce();
-    //     }
-    // }
+        if (orangeship->contains(0, ypos-0.005)){
+            firebullet = false;
+            hit = true;
+            orangeshipV = false;
+            bluebulletV= false;
+            explosion->setX(orangeship->getX());
+            explosion->setY(orangeship->getY());
+            explosion->playOnce();
+        }
+    }
     
     if (hit){
         explosion->setY(explosion->getY()-0.0001);
@@ -109,24 +113,24 @@ void Game::draw() const{ // removed const temporarily
     thirdbg->draw(0);
 
 
-    // if (blueshipV){
-    //     blueship->draw(0.2);
-    // }
-    // if (orangeshipV){
-    //     orangeship->draw(0.2);
-    // }
+    if (blueshipV){
+        blueship->draw(0.2);
+    }
+    if (orangeshipV){
+        orangeship->draw(0.2);
+    }
 
-	// if(jellyfishV){
-	// 	jellyfish->draw(0.3);
-	// }
-	// if(bluebulletV){
-	// 	bluebullet->draw(0.2);
-	// }
-	// if(orangebulletV){
-	// 	orangebullet->draw(0.2);
-	// }
+	if(jellyfishV){
+		jellyfish->draw(0.3);
+	}
+	if(bluebulletV){
+		bluebullet->draw(0.2);
+	}
+	if(orangebulletV){
+		orangebullet->draw(0.2);
+	}
 
-    // explosion->draw(0.1);
+    explosion->draw(0.1);
 };
 
 void Game::handleKeyDown(unsigned char key, float x, float y){
@@ -144,10 +148,10 @@ void Game::handleKeyDown(unsigned char key, float x, float y){
 Game::~Game(){
     stop();
 
-	// delete blueship; 
-	// delete orangeship;
-	// delete jellyfish;
+	delete blueship; 
+	delete orangeship;
+	delete jellyfish;
 
-	// delete bluebullet;
-	// delete orangebullet;
+	delete bluebullet;
+	delete orangebullet;
 }

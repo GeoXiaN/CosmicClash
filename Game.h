@@ -41,13 +41,12 @@ public:
     
     void draw() const; // removed const
     void handleKeyDown(unsigned char, float, float);
-    
     void action();
 	
+	friend void timer(int);
 
     ~Game();
 
-	friend void timer(int);
 
 };
 

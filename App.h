@@ -24,6 +24,8 @@ public:
     void keyDown(unsigned char key, float x, float y);
     
     ~App();
+	
+	//friend void timer(int);
 };
 
 #endif
