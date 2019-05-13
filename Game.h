@@ -43,7 +43,7 @@ public:
     void handleKeyDown(unsigned char, float, float);
     void action();
 	
-	friend void timer(int);
+	//friend void timer(int);
 
     ~Game();
 
