@@ -17,6 +17,10 @@ Game::Game(){
 	bluebulletfile = "bluebullet.png";
 	orangebulletfile = "orangebullet.png";
 
+	fireballfile= "fireball.bmp";
+	explosion = new AnimatedRect(fireballfile, 6, 6, 64, false, false, -0.25, 0.8, 0.5, 0.5);
+
+
 
 	blueship = new TexRect(blueshipfile,-1.5, 0.2, 0.5, 0.25);
 	orangeship = new TexRect (orangeshipfile, 1.2, 0.25, 0.2, 0.3);
@@ -38,6 +42,8 @@ Game::Game(){
 	inc = 0.0025;
     hit = false;
     forward = true;
+
+	oprojup= true;
 
 	// vector<collider> loadout;
 	// for (size_t i = 0; i < count; i++)
@@ -96,8 +102,27 @@ void Game::action(){
 	//st->redraw();
 	glutPostRedisplay();
 
-    //float mx = 0.5;
-    //float my = 0;
+    float mx = 0.5;
+    float my = 0;
+
+	float ox =orangeship-> getX();
+	float oy =orangeship-> getY();
+
+	if(oprojup){
+		oy += 0.0005;
+		orangeship->setY(oy);
+	}else{
+		oy -= 0.0005;
+		orangeship->setY(oy);
+	}
+	if(oy> 0.75){
+		oprojup = false;
+	}
+	if(oy<-0.55){
+		oprojup = true;
+	}
+
+	
     
 
     if (!hit && firebullet){
@@ -105,7 +130,7 @@ void Game::action(){
         xpos +=0.005;
         bluebullet->setX(xpos);
 
-        if (orangeship->contains(0, xpos-0.005)){
+        if (orangeship->contains(1.2,0.5)){
             firebullet = false;
             hit = true;
             orangeshipV = false;
@@ -116,12 +141,12 @@ void Game::action(){
         }
     }
     
-    // if (hit){
-    //     explosion->setY(explosion->getY()-0.0001);
-    // }
+    if (hit){
+        explosion->setX(explosion->getX()-0.0001);
+    }
 }
 
-void Game::draw() const{ // removed const temporarily
+void Game::draw() const{ 
     background->draw(0);
     secondbg->draw(0);
     thirdbg->draw(0);
@@ -144,7 +169,7 @@ void Game::draw() const{ // removed const temporarily
 	// 	orangebullet->draw(0.2);
 	// }
 
-    //explosion->draw(0.1);
+    explosion->draw(0.5);
 };
 
 void Game::handleKeyDown(unsigned char key, float x, float y){
@@ -177,6 +202,6 @@ Game::~Game(){
 	delete orangeship;
 	// delete jellyfish;
 
-	// delete bluebullet;
+	delete bluebullet;
 	// delete orangebullet;
 }

@@ -14,6 +14,8 @@ class Game: public AppComponent, private Timer{
 	const char* bluebulletfile;
 	const char* orangebulletfile;
 
+	const char* fireballfile;
+
     TexRect* blueship; //mushroom
 	TexRect* orangeship;
 	TexRect* jellyfish;
@@ -33,6 +35,7 @@ class Game: public AppComponent, private Timer{
     bool firebullet;
 	bool hit;
 	bool forward;
+	bool oprojup;
 
 	float inc;
 
