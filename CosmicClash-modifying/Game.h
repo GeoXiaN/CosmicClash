@@ -4,6 +4,7 @@
 #include "AppComponent.h"
 #include "AnimatedRect.h"
 #include "Timer.h"
+#include <vector>
 
 class Game: public AppComponent, private Timer{
 	
@@ -21,11 +22,14 @@ class Game: public AppComponent, private Timer{
 	TexRect* jellyfish;
 
 	TexRect* bluebullet;
+	std::vector<TexRect*>  bluebullets;
 	TexRect* orangebullet;
     
 	TexRect* background;
     TexRect* secondbg;
     TexRect* thirdbg;
+
+
 
 	float ox;
 	float oy;
@@ -55,6 +59,7 @@ public:
     
     void draw() const; // removed const
     void handleKeyDown(unsigned char, float, float);
+	void handleKeyUp(unsigned char, float, float);
     void action();
 	
 	//friend void timer(int);

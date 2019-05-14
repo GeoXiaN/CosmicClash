@@ -151,14 +151,48 @@ void Game::action(){
 	}
 
 	
+
+	for (int i = 0; i < bluebullets.size(); i++){
+		float xpos = bluebullets[i]->getX();
+        xpos +=0.005;
+        bluebullets[i]->setX(xpos);
+	}
     
+
+	for (int i = 0; i < bluebullets.size(); i++) {
+		if (orangeship->contains(bluebullets[i]->getX(), bluebullets[i]->getY())){  
+			firebullet = false;
+			hit = true;
+			orangeshipV = false;
+			bluebulletV= false;
+			explosion->setX(orangeship->getX());
+			explosion->setY(orangeship->getY());
+			explosion->playOnce();
+		}
+	}
+
+	for (int i = 0; i < bluebullets.size(); i++) {
+		if (bluebullets[i]->getX() > 1 && bluebullets[i]->getX() < 1.5) { 
+			if (oprojup) {
+				orangeship->setY(bluebullets[i]->getY() + 0.6);
+			}
+			else {
+				orangeship->setY(bluebullets[i]->getY() - 0.3);
+			}
+			
+		}
+	}
+
+	
 
     if (!hit && firebullet){
         float xpos = bluebullet->getX();
         xpos +=0.005;
         bluebullet->setX(xpos);
+		float ypos = blueship->getY() - blueship->getH()/2;
+		bluebullet->setY(ypos);
 
-        if (orangeship->contains(1.2,0.25)){  
+        if (orangeship->contains(bluebullet->getX(), bluebullet->getY())){  
             firebullet = false;
             hit = true;
             orangeshipV = false;
@@ -193,6 +227,10 @@ void Game::draw() const{
 	if(bluebulletV){
 		bluebullet->draw(0.3);
 	}
+
+	for (int i = 0; i < bluebullets.size(); i++){
+		bluebullets[i]->draw(0.3);
+	}
 	// if(orangebulletV){
 	// 	orangebullet->draw(0.2);
 	// }
@@ -200,10 +238,27 @@ void Game::draw() const{
     explosion->draw(0.5);
 };
 
+void Game::handleKeyUp(unsigned char key, float x, float y){
+	if (key == 'a'){
+		bprojleft = false;
+	}
+	if (key == 's'){
+		bprojdown = false;
+	}
+	if (key == 'd'){
+		bprojright = false;
+	}
+	if (key == 'w'){
+		bprojup = false;
+	}
+}
+
+
 void Game::handleKeyDown(unsigned char key, float x, float y){
     if (key == ' '){
-		bluebulletV = true;
-        firebullet = true;
+		//bluebulletV = true;
+        //firebullet = true;
+		bluebullets.push_back(new TexRect(bluebulletfile, blueship->getX() + blueship->getW(), blueship->getY() - blueship->getH()/2 + 0.025, 0.1, 0.05));
     }
     else if (key == 'p'){
         stop();
