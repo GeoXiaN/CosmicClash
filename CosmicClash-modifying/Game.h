@@ -21,9 +21,8 @@ class Game: public AppComponent, private Timer{
 	TexRect* orangeship;
 	TexRect* jellyfish;
 
-	TexRect* bluebullet;
-	std::vector<TexRect*>  bluebullets;
-	TexRect* orangebullet;
+	std::vector<TexRect*> bluebullets;
+	std::vector<TexRect*> orangebullets;
     
 	TexRect* background;
     TexRect* secondbg;

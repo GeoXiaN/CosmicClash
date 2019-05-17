@@ -2,8 +2,6 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-
-//#include "collider.h"
 #include "Game.h"
 
 
@@ -11,22 +9,18 @@ Game::Game(){
 
 	blueshipfile = "blueship.png";
 	orangeshipfile = "orangeship.png";
-	// jellyfishfile = "jellyfish.png";
+	jellyfishfile = "jellyfish.png";
 	spacebgfile = "spacebg.png";
 
 	bluebulletfile = "bluebullet.png";
 	orangebulletfile = "orangebullet.png";
 
-	fireballfile= "fireball.png";
+	fireballfile = "fireball.png";
 	explosion = new AnimatedRect(fireballfile, 6, 6, 64, false, false, -0.25, 0.8, 0.5, 0.5);
-
-
 
 	blueship = new TexRect(blueshipfile,-1.5, 0.2, 0.5, 0.25);
 	orangeship = new TexRect (orangeshipfile, 1.2, 0.25, 0.2, 0.3);
-	// jellyfish = new TexRect (jellyfishfile, 0, 1, 0, 0);
-
-	bluebullet = new TexRect(bluebulletfile, -1, 0.1,0.1,0.05);
+	jellyfish = new TexRect (jellyfishfile, 0, 0, 0.4, 0.4);
 
 	background = new TexRect(spacebgfile, -4, 1, 4, 2);
     secondbg = new TexRect(spacebgfile, 0, 1, 4, 2);
@@ -36,31 +30,19 @@ Game::Game(){
 	orangeshipV = true;
 	jellyfishV = true;
 
-	bluebulletV = false;
-	
-	firebullet = false;
 	inc = 0.0025;
     hit = false;
     forward = true;
 
 	oprojup = true;
 
-
 	bprojup = false;
 	bprojdown = false;
 	bprojleft = false;
 	bprojright = false;
-
-	// vector<collider> loadout;
-	// for (size_t i = 0; i < count; i++)
-	// {
-	// 	/* !colider = false; */
-	// }
 	
     setRate(1);
     start();
-	//st = this;
-	//timer(1);
 }
 
 
@@ -105,17 +87,27 @@ void Game::action(){
 	background->setX(x1-amount);
 	secondbg->setX(x2-amount);
 	thirdbg->setX(x3-amount);
-	//st->redraw();
-	glutPostRedisplay();
 
     float mx = 0.5;
     float my = 0;
 
-	float ox =orangeship-> getX();
-	float oy =orangeship-> getY();
+	float ox = orangeship-> getX();
+	float oy = orangeship-> getY();
 
-	float bx =blueship -> getX();
-	float by =blueship -> getY();
+	float bx = blueship -> getX();
+	float by = blueship -> getY();
+
+	float jx = jellyfish-> getX();
+	float jy = jellyfish-> getY();
+
+	if(jellyfishV){
+		jy += 0.0005;
+		jellyfish->setY(jy);
+	}
+
+	if(jellyfish->getY()> 1.3){
+		jellyfish ->setY(-1);
+	}
 
 	if(oprojup){
 		oy += 0.0005;
@@ -124,9 +116,11 @@ void Game::action(){
 		oy -= 0.0005;
 		orangeship->setY(oy);
 	}
+
 	if(oy > 0.75){
 		oprojup = false;
 	}
+
 	if(oy <-0.55){
 		oprojup = true;
 	}
@@ -135,6 +129,7 @@ void Game::action(){
 		by += 0.0005;
 		blueship->setY(by);	
 	} 
+
 	if(bprojdown){
 		by -= 0.0005;
 		blueship->setY(by);
@@ -158,17 +153,35 @@ void Game::action(){
         bluebullets[i]->setX(xpos);
 	}
     
-
-	for (int i = 0; i < bluebullets.size(); i++) {
-		if (orangeship->contains(bluebullets[i]->getX(), bluebullets[i]->getY())){  
-			firebullet = false;
-			hit = true;
-			orangeshipV = false;
-			bluebulletV= false;
-			explosion->setX(orangeship->getX());
-			explosion->setY(orangeship->getY());
-			explosion->playOnce();
+	if(orangeshipV){
+		for (int i = 0; i < bluebullets.size(); i++) {
+			if (orangeship->contains(bluebullets[i]->getX(), bluebullets[i]->getY())){ 
+				hit = true;
+				orangeshipV = false;
+				explosion->setX(orangeship->getX());
+				explosion->setY(orangeship->getY());
+				explosion->playOnce();
+			}
 		}
+	}
+
+	if(jellyfishV){
+		for (int i = 0; i < bluebullets.size(); i++) {
+			if (jellyfish->contains(bluebullets[i]->getX(), bluebullets[i]->getY())){  
+				hit = true;
+				jellyfishV= false;
+				explosion->setX(jellyfish->getX());
+				explosion->setY(jellyfish->getY());
+				explosion->playOnce();
+			}
+		}
+	}
+	
+
+	for (int i = 0; i < orangebullets.size(); i++){
+		float xpos = orangebullets[i]->getX();
+        xpos -=0.005;
+        orangebullets[i]->setX(xpos);
 	}
 
 	for (int i = 0; i < bluebullets.size(); i++) {
@@ -182,30 +195,14 @@ void Game::action(){
 			
 		}
 	}
-
-	
-
-    if (!hit && firebullet){
-        float xpos = bluebullet->getX();
-        xpos +=0.005;
-        bluebullet->setX(xpos);
-		float ypos = blueship->getY() - blueship->getH()/2;
-		bluebullet->setY(ypos);
-
-        if (orangeship->contains(bluebullet->getX(), bluebullet->getY())){  
-            firebullet = false;
-            hit = true;
-            orangeshipV = false;
-            bluebulletV= false;
-            explosion->setX(orangeship->getX());
-            explosion->setY(orangeship->getY());
-            explosion->playOnce();
-        }
-    }
     
     if (hit){
         explosion->setX(explosion->getX()-0.0001);
     }
+
+	
+	
+	glutPostRedisplay();
 }
 
 void Game::draw() const{ 
@@ -215,25 +212,24 @@ void Game::draw() const{
 
 
     if (blueshipV){
-        blueship->draw(0.2);
+        blueship->draw(0.4);
     }
     if (orangeshipV){
-        orangeship->draw(0.2);
+        orangeship->draw(0.4);
     }
 
-	// if(jellyfishV){
-	// 	jellyfish->draw(0.3);
-	// }
-	if(bluebulletV){
-		bluebullet->draw(0.3);
+	if(jellyfishV){
+		jellyfish->draw(0.2);
 	}
 
 	for (int i = 0; i < bluebullets.size(); i++){
 		bluebullets[i]->draw(0.3);
 	}
-	// if(orangebulletV){
-	// 	orangebullet->draw(0.2);
-	// }
+
+	for (int i = 0; i < orangebullets.size(); i++){
+		orangebullets[i]->draw(0.3);
+	}
+	
 
     explosion->draw(0.5);
 };
@@ -256,10 +252,11 @@ void Game::handleKeyUp(unsigned char key, float x, float y){
 
 void Game::handleKeyDown(unsigned char key, float x, float y){
     if (key == ' '){
-		//bluebulletV = true;
-        //firebullet = true;
 		bluebullets.push_back(new TexRect(bluebulletfile, blueship->getX() + blueship->getW(), blueship->getY() - blueship->getH()/2 + 0.025, 0.1, 0.05));
     }
+	else if (key=='t'){
+		orangebullets.push_back(new TexRect(orangebulletfile, orangeship->getX() + orangeship->getW()/2, orangeship->getY() - orangeship->getH()/2 + 0.025, 0.1, 0.1));
+	}
     else if (key == 'p'){
         stop();
     }
@@ -267,32 +264,20 @@ void Game::handleKeyDown(unsigned char key, float x, float y){
         start();
     }
 	if (key == 'w'){
-		bprojleft=false;
-		bprojright=false;
 		bprojdown = false;
-
 		bprojup = true;
 	}
 	if (key == 'a'){
-		bprojup = false;
-		bprojdown = false;
 		bprojright = false;
-
 		bprojleft = true;
 
 	}
 	if (key == 's'){
 		bprojup = false;
-		bprojleft = false;
-		bprojright = false;
-
 		bprojdown = true;
 	}
 	if (key == 'd'){
-		bprojup = false;
 		bprojleft = false;
-		bprojdown = false;
-
 		bprojright = true;
 	}
 
@@ -308,8 +293,5 @@ Game::~Game(){
 
 	delete blueship; 
 	delete orangeship;
-	// delete jellyfish;
-
-	delete bluebullet;
-	// delete orangebullet;
+	delete jellyfish;
 }
